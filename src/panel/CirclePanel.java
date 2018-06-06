@@ -14,13 +14,19 @@ import javax.swing.JPanel;
 
 import shape.Circle;
 
+/*
+ * 
+ * @author Da
+ *
+ */
 public class CirclePanel extends JPanel implements MouseListener, MouseMotionListener {
 
-	Circle circle = null;
-	int x2, y2, epsilon;
-	Point initialPoint = null;
-
-	List<Circle> points;
+	private Point initialPoint = null; // The center
+	private Circle circle      = null; // The main circle
+	private int x2, y2; // Final coords
+	private int epsilon = 20;
+	private List<Circle> points; // Points of grid
+	
 	
 	public CirclePanel() {
 		super();
@@ -37,26 +43,25 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		}
 	}
 
-	
+
+	/**
+	 * Compute Distance between two circles (based on their centers) 
+	 * @param p1
+	 * @param p2
+	 * @return
+	 */
 	private double distance(Circle p1, Circle p2) {
 		double d = Math.sqrt(Math.pow((p1.getX() - p2.getX()), 2) + Math.pow((p1.getY() - p2.getY()), 2)) ;
-		//System.out.println("Distance : "+d);
 		return d;
 	}
 	
 	
-	
-	
-	private void plotPoints(Graphics g) {
-		Circle p1 = new Circle(10, 13);
-		Circle p2 = new Circle(25, 30);
-		
-		System.out.println("D = " + distance(p1, p2));
-		
-		for(Circle p: points) {
-			
-			//System.out.println(p.getX()+" , "+p.getY());
-			
+	/**
+	 * Plot the grid points
+	 * @param g
+	 */
+	private void plotPoints(Graphics g) {	
+		for(Circle p: points) {	
 			double d = 0.0;
 			if(circle != null) {
 				d = distance(p, circle);
@@ -64,13 +69,10 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 			
 			if(circle!=null && d <= circle.getRadius() + epsilon  && d >= circle.getRadius() - epsilon ) {
 				g.setColor(Color.BLACK);
-				g.fillOval(p.getX(), p.getY(), 10, 10);
 			} else {
 				g.setColor(Color.WHITE);
-				g.fillOval(p.getX(), p.getY(), 10, 10);
-			}
-			
-			
+			}	
+			g.fillOval(p.getX(), p.getY(), 10, 10);
 		}
 	}
 	
@@ -118,14 +120,10 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		initialPoint = mEvt.getPoint();
 
 		repaint();
-		Point toto = mEvt.getPoint();
 
 		circle = new Circle();
 
-	
-		System.out.println("Pressed "+toto.getX()+" , "+toto.getY());
-
-		int radius = 10;
+		int radius = 20;
 		circle.setX(mEvt.getX()-radius);
 		circle.setY(mEvt.getY()-radius);
 
@@ -134,17 +132,15 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		System.out.println("Released "+arg0.getX()+" , "+arg0.getY());
 		x2 = arg0.getX();
 		y2 = arg0.getY();
-
+		System.out.println("Released "+x2+" , "+y2);
 		circle.setRadius(Math.abs(x2 - circle.getX())); 
 		repaint();	
 	}
 
 	@Override
-	public void paintComponent(Graphics g) 
-	{
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		plotPoints(g);
@@ -152,8 +148,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		if (circle != null) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-			epsilon = 30;
-			
+			// Plot Circles 
 			int r2 = circle.getRadius() + epsilon;
 			g2.setColor(new Color(255, 0, 0, 50));
 			g2.fillOval(circle.getX() - r2, circle.getY() - r2, 2*(r2), 2*(r2));

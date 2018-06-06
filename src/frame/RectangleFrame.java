@@ -21,7 +21,11 @@ import shape.Rectangle;
 
 
 
-
+/**
+ * 
+ * @author Da
+ *
+ */
 public class RectangleFrame extends JFrame implements ActionListener {
 
 	JPanel buttonPanel;
@@ -31,7 +35,10 @@ public class RectangleFrame extends JFrame implements ActionListener {
 	JCheckBox union;
 	JPanel drawingArea;
 
-	
+	/**
+	 * Create frame
+	 * @param circle
+	 */
 	public RectangleFrame(boolean circle){		
 		super();
 		setTitle("Rectangles");
@@ -48,15 +55,6 @@ public class RectangleFrame extends JFrame implements ActionListener {
 
 		union = new JCheckBox("Draw Union");
 		buttonPanel.add(union);
-
-		//saveImage = new JButton("Save Image");
-		//saveImage.setMargin(new Insets(0,0,0,0));
-		//buttonPanel.add(saveImage);
-
-		//clearImage = new JButton("Clear Image");
-		//clearImage.setMargin(new Insets(0,0,0,0));
-		//buttonPanel.add(clearImage);
-
 		
 		if(circle) {
 			drawingArea = new CirclePanel();
