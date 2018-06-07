@@ -14,7 +14,7 @@ import java.awt.color.*;
  */
 public class Circle {
 
-	private int x, y, radius;
+	protected int x, y, radius;
 
 	public Circle() {}
 	public Circle(int x2, int y2) {

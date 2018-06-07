@@ -29,11 +29,13 @@ import shape.Rectangle;
 public class RectangleFrame extends JFrame implements ActionListener {
 
 	JPanel buttonPanel;
-	JButton saveImage;
+	JButton generate;
 	JButton clearImage;
 	JCheckBox intersections;
 	JCheckBox union;
 	JPanel drawingArea;
+	
+	int size = 800;
 
 	/**
 	 * Create frame
@@ -42,7 +44,7 @@ public class RectangleFrame extends JFrame implements ActionListener {
 	public RectangleFrame(boolean circle){		
 		super();
 		setTitle("Rectangles");
-		setSize(600,600);
+		setSize(size,size);
 		setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -50,14 +52,16 @@ public class RectangleFrame extends JFrame implements ActionListener {
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(buttonPanel, BorderLayout.SOUTH);
 
-		intersections = new JCheckBox("Draw Intersections");
-		buttonPanel.add(intersections);
-
-		union = new JCheckBox("Draw Union");
-		buttonPanel.add(union);
+		//intersections = new JCheckBox("Draw Intersections");
+		//buttonPanel.add(intersections);
+		//union = new JCheckBox("Draw Union");
+		
+		generate = new JButton("Generate");	
+		buttonPanel.add(generate);
+		
 		
 		if(circle) {
-			drawingArea = new CirclePanel();
+			drawingArea = new CirclePanel(size);
 		} else {
 			drawingArea = new RectanglePanel();
 		}
