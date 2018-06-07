@@ -10,14 +10,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JPanel;
-
-import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
 import shape.Circle;
-//import shape.Point;
 import compute.GaussNawtonOptimizer1;
 
 /*
@@ -97,6 +92,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		}
 	}
 	
+	
 	public shape.Point getNearestPoint(int x, int y){
 		for(shape.Point p: points) {
 			double d = distance(p, x, y);
@@ -128,7 +124,6 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 				vect.add(new Vector2D(p.getX(), p.getY()));
 			}
 		}
-		
 		
 		double u[] = GaussNawtonOptimizer1.getCircle(vect);
 		
@@ -188,7 +183,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		repaint();
 		int radius = 20;
 
-		plotCircle(mEvt.getX()-radius, mEvt.getY()-radius, 20);
+		plotCircle(mEvt.getX(), mEvt.getY(), radius);
 	}
 
 	@Override
