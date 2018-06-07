@@ -13,8 +13,12 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.apache.commons.math3.fitting.leastsquares.GaussNewtonOptimizer;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import shape.Circle;
 //import shape.Point;
+import compute.GaussNawtonOptimizer1;
 
 /*
  * 
@@ -60,6 +64,12 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 	}
 	
 	
+	private double distance(shape.Point p1, int x, int y) {
+		double d = Math.sqrt(Math.pow((p1.getX() - x), 2) + Math.pow((p1.getY() - y), 2)) ;
+		return d;
+	}
+	
+	
 	/**
 	 * Plot the grid points
 	 * @param g
@@ -71,19 +81,61 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 				d = distance(p, circle);
 			}
 			
-			if(circle!=null && d <= circle.getRadius() + epsilon  && d >= circle.getRadius() - epsilon ) {
+			if(p.isSelected()) {
+				g.setColor(Color.RED);
+			}
+			
+			else if(circle!=null && d <= circle.getRadius() + epsilon  && d >= circle.getRadius() - epsilon ) {
 				g.setColor(Color.BLACK);
-				p.setSelected(true);
+				//p.setSelected(true);
 			} else {
 				g.setColor(Color.WHITE);
-				p.setSelected(false);
+				//p.setSelected(false);
 			}	
 			
-			System.out.println(p.getX());
-			g.fillOval(p.getX(), p.getY(), 10, 10);
+			g.fillOval((int) p.getX(), (int) p.getY(), 10, 10);
 		}
 	}
 	
+	public shape.Point getNearestPoint(int x, int y){
+		for(shape.Point p: points) {
+			double d = distance(p, x, y);
+			if(d <= epsilon) {
+				System.out.println("Found !!!!");
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	
+	private void plotCircle(double x, double y, double radius) {
+		circle = new Circle();
+		
+		circle.setX(x);
+		circle.setY(y);
+		circle.setRadius(radius); 
+		
+		repaint();
+	}
+	
+	public void generateCircle() {
+		
+		ArrayList<Vector2D> vect = new ArrayList<Vector2D>();
+		
+		for(shape.Point p: points) {
+			if(p.isSelected()) {
+				vect.add(new Vector2D(p.getX(), p.getY()));
+			}
+		}
+		
+		
+		double u[] = GaussNawtonOptimizer1.getCircle(vect);
+		
+		plotCircle(u[0], u[1], u[2]);
+		System.out.println("OUIIIIIII");
+		
+	}
 	
 	
 	@Override
@@ -101,13 +153,19 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		
+		System.out.println("Clicked "+arg0.getX()+" , "+arg0.getY());
+		x2 = arg0.getX();
+		y2 = arg0.getY();
+		
+		shape.Point p = getNearestPoint(x2, y2);
+		
+		if(p != null)
+			p.setSelected(!p.isSelected());
 	}
 
 	@Override
@@ -128,14 +186,9 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		initialPoint = mEvt.getPoint();
 
 		repaint();
-
-		circle = new Circle();
-
 		int radius = 20;
-		circle.setX(mEvt.getX()-radius);
-		circle.setY(mEvt.getY()-radius);
 
-		repaint();
+		plotCircle(mEvt.getX()-radius, mEvt.getY()-radius, 20);
 	}
 
 	@Override
@@ -157,16 +210,16 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 			Graphics2D g2 = (Graphics2D) g;
 			
 			// Plot Circles 
-			int r2 = circle.getRadius() + epsilon;
+			double r2 = circle.getRadius() + epsilon;
 			g2.setColor(new Color(255, 0, 0, 50));
-			g2.fillOval(circle.getX() - r2, circle.getY() - r2, 2*(r2), 2*(r2));
+			g2.fillOval((int) (circle.getX() - r2), (int) (circle.getY() - r2), (int) (2*(r2)), (int) (2*(r2)));
 			
 			g2.setColor(new Color(0, 0, 255, 50));
-			g2.fillOval(circle.getX()-circle.getRadius(), circle.getY()-circle.getRadius(), 2*circle.getRadius(), 2*circle.getRadius());
+			g2.fillOval((int) (circle.getX()-circle.getRadius()), (int) (circle.getY()-circle.getRadius()), (int) (2*circle.getRadius()), (int) (2*circle.getRadius()));
 			
-			int r1 = circle.getRadius() - epsilon;
+			double r1 = circle.getRadius() - epsilon;
 			g2.setColor(new Color(0, 255, 0, 50));		
-			g2.fillOval(circle.getX() - r1, circle.getY() - r1, 2*(r1), 2*(r1));
+			g2.fillOval((int) (circle.getX() - r1), (int) (circle.getY() - r1), (int) (2*(r1)), (int) (2*(r1)));
 				
 		}
 	}
