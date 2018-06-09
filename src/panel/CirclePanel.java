@@ -81,7 +81,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 			}
 			
 			else if(circle!=null && d <= circle.getRadius() + epsilon  && d >= circle.getRadius() - epsilon ) {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.BLUE);
 				//p.setSelected(true);
 			} else {
 				g.setColor(Color.WHITE);
@@ -126,10 +126,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		}
 		
 		double u[] = CircleRegression.getCircle(vect);
-		
 		plotCircle(u[0], u[1], u[2]);
-		System.out.println("OUIIIIIII");
-		
 	}
 	
 	

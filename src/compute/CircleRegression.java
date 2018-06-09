@@ -23,7 +23,7 @@ import org.apache.commons.math3.util.Pair;
 public class CircleRegression {
 
 	/**
-	 * Implements the method which get the initialization values
+	 * Implements the method which get the initialization values return [c1, c2, r]
 	 * @param observed
 	 * @return
 	 */
@@ -70,7 +70,7 @@ public class CircleRegression {
 
 
 	/**
-	 * Create the circle based on points
+	 * Create the circle based on points. return [c1, c2, r]
 	 * @param observed
 	 * @return
 	 */
