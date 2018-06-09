@@ -39,12 +39,14 @@ public class GaussNawtonOptimizer1 {
 		RealMatrix B = new Array2DRowRealMatrix(observed.size(), 4);
 		for(int i = 0; i < observed.size(); i++) {
 			Vector2D p = observed.get(i);
-			B.setEntry(i,  0, p.getX()*p.getX() + p.getX()*p.getX());
+			B.setEntry(i,  0, p.getX()*p.getX() + p.getY()*p.getY());
 			B.setEntry(i,  1, p.getX());
 			B.setEntry(i,  2, p.getY());
 			B.setEntry(i,  3, 1.0);
 		}
 
+		System.out.println("B: "+B);
+		
 
 		// SVD + take the vector associated to smallest singular value of B
 		SingularValueDecomposition svd = new SingularValueDecomposition(B);
@@ -62,10 +64,10 @@ public class GaussNawtonOptimizer1 {
 		}
 
 		// Define u = [a, b1, b2, c]
-		double a = svd.getVT().getColumn(3)[0];
-		double b1 = svd.getVT().getColumn(3)[1];
-		double b2 = svd.getVT().getColumn(3)[2];
-		double c = svd.getVT().getColumn(3)[3];
+		double a = svd.getV().getColumn(3)[0];
+		double b1 = svd.getV().getColumn(3)[1];
+		double b2 = svd.getV().getColumn(3)[2];
+		double c = svd.getV().getColumn(3)[3];
 		
 		System.out.println("a : "+a+", b1 : "+b1+", b2 : "+b2+", c : "+c);
 
@@ -142,16 +144,6 @@ public class GaussNawtonOptimizer1 {
 	
 	
 	public static void main(String args[]) {
-		
-	
-	 Vector2D[] observedPoints = new Vector2D[] {
-		      new Vector2D( 1.0,  7.0),
-		      new Vector2D( 2.0,  6.0),
-		      new Vector2D( 5.0,  8.0),
-		      new Vector2D( 7.0,  7.0),
-		      new Vector2D( 9.0,  5.0),
-		      new Vector2D( 3.0,  5.0)
-		  };
 		
 	 ArrayList<Vector2D> vect = new ArrayList<Vector2D>();
 	 vect.add(new Vector2D( 1.0,  7.0));
