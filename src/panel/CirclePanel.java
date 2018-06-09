@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import shape.Circle;
-import compute.GaussNawtonOptimizer1;
+import compute.CircleRegression;
 
 /*
  * 
@@ -125,7 +125,7 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 			}
 		}
 		
-		double u[] = GaussNawtonOptimizer1.getCircle(vect);
+		double u[] = CircleRegression.getCircle(vect);
 		
 		plotCircle(u[0], u[1], u[2]);
 		System.out.println("OUIIIIIII");
@@ -180,10 +180,15 @@ public class CirclePanel extends JPanel implements MouseListener, MouseMotionLis
 		System.out.println("Pressed");
 		initialPoint = mEvt.getPoint();
 
-		repaint();
+		int x2 = mEvt.getX();
+		int y2 = mEvt.getY();
+		
 		int radius = 20;
 
-		plotCircle(mEvt.getX(), mEvt.getY(), radius);
+		shape.Point p = getNearestPoint(x2, y2);
+		
+		plotCircle(p.getX(), p.getY(), radius);
+		repaint();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package compute;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,20 +20,14 @@ import org.apache.commons.math3.optim.SimpleVectorValueChecker;
 import org.apache.commons.math3.util.Pair;
 
 
-public class GaussNawtonOptimizer1 {
+public class CircleRegression {
 
-	public static double[] getInitialValue(ArrayList<Vector2D> observed) {
-
-		/*final Vector2D[] observedPoints = new Vector2D[] {
-				new Vector2D( 1.0,  7.0),
-				new Vector2D( 2.0,  6.0),
-				new Vector2D( 5.0,  8.0),
-				new Vector2D( 7.0, 7.0),
-				new Vector2D( 9.0,  5.0),
-				new Vector2D( 3.0,  7.0),
-		};*/
-
-
+	/**
+	 * Implements the method which get the initialization values
+	 * @param observed
+	 * @return
+	 */
+	private static double[] getInitialValue(ArrayList<Vector2D> observed) {
 		// Define B
 		RealMatrix B = new Array2DRowRealMatrix(observed.size(), 4);
 		for(int i = 0; i < observed.size(); i++) {
@@ -47,15 +40,8 @@ public class GaussNawtonOptimizer1 {
 
 		System.out.println("B: "+B);
 		
-
 		// SVD + take the vector associated to smallest singular value of B
 		SingularValueDecomposition svd = new SingularValueDecomposition(B);
-		/*System.out.println();
-		System.out.println(B);
-		System.out.println(svd.getS());
-		System.out.println("");
-		System.out.println(svd.getV().toString());
-		System.out.println(svd.getU().toString());*/
 
 		double singularValues[] = svd.getSingularValues();
 		
@@ -83,7 +69,11 @@ public class GaussNawtonOptimizer1 {
 	}
 
 
-
+	/**
+	 * Create the circle based on points
+	 * @param observed
+	 * @return
+	 */
 	public static double[] getCircle(ArrayList<Vector2D> observed) {
 
 		double u[] = getInitialValue(observed) ;
@@ -112,7 +102,6 @@ public class GaussNawtonOptimizer1 {
 		};
 
 
-
 		// the target is to have all points at the specified radius from the center
 		double[] prescribedDistances = new double[observed.size()];
 		Arrays.fill(prescribedDistances, u[2]);
@@ -128,7 +117,7 @@ public class GaussNawtonOptimizer1 {
 				maxIterations(10000).
 				build();
 
-
+		// Let's get party
 		LeastSquaresOptimizer.Optimum optimum = new LevenbergMarquardtOptimizer().optimize(problem);
 		Vector2D fittedCenter = new Vector2D(optimum.getPoint().getEntry(0), optimum.getPoint().getEntry(1));
 		System.out.println("fitted center: "   + fittedCenter.getX() + " " + fittedCenter.getY());
@@ -137,25 +126,7 @@ public class GaussNawtonOptimizer1 {
 		System.out.println("evaluations: "     + optimum.getEvaluations());
 		System.out.println("iterations: "      + optimum.getIterations());
 
-
 		double uFinal[] = {fittedCenter.getX(), fittedCenter.getY(), optimum.getPoint().getEntry(2)};
 		return uFinal;
 	}
-	
-	
-	public static void main(String args[]) {
-		
-	 ArrayList<Vector2D> vect = new ArrayList<Vector2D>();
-	 vect.add(new Vector2D( 1.0,  7.0));
-	 vect.add(new Vector2D( 2.0,  6.0));
-	 vect.add(new Vector2D( 5.0,  8.0));
-	 vect.add(new Vector2D( 7.0,  7.0));
-	 vect.add(new Vector2D( 9.0,  5.0));
-	 vect.add(new Vector2D( 3.0,  5.0));
-	 
-	 getInitialValue(vect);
-	 
-		
-	}
 }
-
